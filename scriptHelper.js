@@ -37,45 +37,76 @@ function validateInput(testInput) {
 }
 
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
-  list = document.querySelector("#faultyItems");
-  let pilotName = document.querySelector("#pilotStatus");
-  pilotName.textContent = `Pilot ${pilot} is ready for launch`;
-  let copilotName = document.querySelector("#copilotStatus");
-  copilotName.textContent = `Co-pilot ${copilot} is ready for launch`;
-  if (fuelLevel < 10000) {
-    list.style.visibility = `visible`;
-    document.querySelector("#fuelStatus").textContent =
-      "Fuel level too low for launch";
-    document.querySelector(
-      "#launchStatus"
-    ).textContent = `Shuttle Not Ready for Launch`;
-    document.querySelector("#launchStatus").style.color = `red`;
+  let pilotStatus = document.getElementById("pilotStatus");
+  let copilotStatus = document.getElementById("copilotStatus");
+  let fuelStatus = document.getElementById("fuelStatus");
+  let launchStatus = document.getElementById("launchStatus");
+  let cargoStatus = document.getElementById("cargoStatus");
+
+  let errMsg = "";
+  if (
+    validateInput(pilot) === `Empty` ||
+    validateInput(copilot) === `Empty` ||
+    validateInput(fuelLevel) === `Empty` ||
+    validateInput(cargoLevel) === `Empty`
+  ) {
+    errMsg += `All fields are required\n`;
+  }
+  if (
+    validateInput(fuelLevel) === "Not a Number" ||
+    validateInput(cargoLevel) === "Not a Number"
+  ) {
+    errMsg += `Please use only numbers for Fuel Level and Cargo Mass\n`;
+  }
+  if (
+    validateInput(pilot) === `Is a Number` ||
+    validateInput(copilot) === `Is a Number`
+  ) {
+    errMsg += "Use only letters for names of Pilot and CoPilot\n";
+  }
+  if (errMsg !== "") {
+    alert(errMsg);
   } else {
+    pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
+    copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
+    list.style.visibility = "hidden";
+  }
+  ////////////////////
+  if (Number(fuelLevel) < 10000) {
+    fuelStatus.innerHTML = `Fuel level too low for launch`;
     list.style.visibility = `visible`;
-    document.querySelector("#launchStatus").style.color = `green`;
-    document.querySelector("#fuelStatus").textContent =
-      "Fuel level high enough for launch";
-    document.querySelector("#launchStatus").textContent =
-      "Shuttle is Ready for Launch";
+    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
+    launchStatus.style.color = `red`;
+  } else {
+    fuelStatus.innerHTML = `Fuel level high enough for launch`;
   }
 
-  if (cargoLevel > 10000) {
+  if (Number(cargoLevel) > 10000) {
+    cargoStatus.innerHTML = `Cargo mass too heavy for launch`;
     list.style.visibility = `visible`;
-    document.querySelector("#cargoStatus").textContent =
-      "Cargo mass too heavy for launch";
-    document.querySelector(
-      "#launchStatus"
-    ).textContent = `Shuttle Not Ready for Launch`;
-    document.querySelector("#launchStatus").style.color = `red`;
+    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
+    launchStatus.style.color = `red`;
+  } else {
+    cargoStatus.innerHTML = `Cargo mass low enough for launch`;
+  }
+  if (Number(cargoLevel) <= 10000 && Number(fuelLevel) >= 10000) {
+    list.style.visibility = `visible`;
+    launchStatus.innerHTML = `Shuttle is Ready for Launch`;
+    launchStatus.style.color = `green`;
   } else {
     list.style.visibility = `visible`;
-    document.querySelector("#launchStatus").style.color = `green`;
-    document.querySelector("#cargoStatus").textContent =
-      "Cargo mass low enough for launch";
-    document.querySelector("#launchStatus").textContent =
-      "Shuttle is Ready for Launch";
+    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
+    launchStatus.style.color = `red`;
   }
 }
+
+/* if (Number(cargoLevel) < 10000 && Number(fuelLevel) > 10000) {
+    fuelStats.innerHTML = "Fuel level high enough for launch";
+    cargoStats.innerHTML = "Cargo mass low enough for launch";
+    list.style.visibility = "visible";
+    launchStats.innerHTML = "Shuttle is Ready for Launch";
+    launchStats.style.color = `green`;
+  } */
 
 async function myFetch() {
   let planetsReturned;
