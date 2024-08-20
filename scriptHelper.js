@@ -52,6 +52,19 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
   ) {
     errMsg += `All fields are required\n`;
   }
+  /////////
+  /*   if (validateInput(pilot) === `Empty`) {
+    pilotStatus.innerHTML = `Pilot not ready for Launch`;
+    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
+    launchStatus.style.color = `red`;
+  }
+  if (validateInput(copilot) === `Empty`) {
+    copilotStatus.innerHTML = `Co-pilot not ready for Launch`;
+    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
+    launchStatus.style.color = `red`;
+  } */
+
+  //////////
   if (
     validateInput(fuelLevel) === "Not a Number" ||
     validateInput(cargoLevel) === "Not a Number"
@@ -64,8 +77,10 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
   ) {
     errMsg += "Use only letters for names of Pilot and CoPilot\n";
   }
+
   if (errMsg !== "") {
     alert(errMsg);
+    location.reload();
   } else {
     pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
     copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
