@@ -52,19 +52,6 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
   ) {
     errMsg += `All fields are required\n`;
   }
-  /////////
-  /*   if (validateInput(pilot) === `Empty`) {
-    pilotStatus.innerHTML = `Pilot not ready for Launch`;
-    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
-    launchStatus.style.color = `red`;
-  }
-  if (validateInput(copilot) === `Empty`) {
-    copilotStatus.innerHTML = `Co-pilot not ready for Launch`;
-    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
-    launchStatus.style.color = `red`;
-  } */
-
-  //////////
   if (
     validateInput(fuelLevel) === "Not a Number" ||
     validateInput(cargoLevel) === "Not a Number"
@@ -80,10 +67,8 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
 
   if (errMsg !== "") {
     alert(errMsg);
-    location.reload();
+    /*     location.reload(); */
   } else {
-    pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
-    copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
     list.style.visibility = "hidden";
   }
   ////////////////////
@@ -104,24 +89,41 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
   } else {
     cargoStatus.innerHTML = `Cargo mass low enough for launch`;
   }
-  if (Number(cargoLevel) <= 10000 && Number(fuelLevel) >= 10000) {
-    list.style.visibility = `visible`;
-    launchStatus.innerHTML = `Shuttle is Ready for Launch`;
-    launchStatus.style.color = `green`;
-  } else {
+  if (
+    validateInput(pilot) === `Empty` ||
+    validateInput(pilot) === `Is a Number`
+  ) {
     list.style.visibility = `visible`;
     launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
     launchStatus.style.color = `red`;
+    pilotStatus.innerHTML = `Pilot not ready for launch`;
+  } else {
+    pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
+  }
+  if (
+    validateInput(copilot) === `Empty` ||
+    validateInput(copilot) === `Is a Number`
+  ) {
+    list.style.visibility = `visible`;
+    launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
+    launchStatus.style.color = `red`;
+    copilotStatus.innerHTML = `Co-Pilot not ready for launch`;
+  } else {
+    copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
+  }
+  if (Number(cargoLevel) <= 10000 && Number(fuelLevel) >= 10000) {
+    if (
+      validateInput(pilot) !== `Empty` &&
+      validateInput(copilot) !== `Empty` &&
+      validateInput(pilot) !== `Is a Number` &&
+      validateInput(copilot) !== `Is a Number`
+    ) {
+      list.style.visibility = `visible`;
+      launchStatus.innerHTML = `Shuttle is Ready for Launch`;
+      launchStatus.style.color = `green`;
+    }
   }
 }
-
-/* if (Number(cargoLevel) < 10000 && Number(fuelLevel) > 10000) {
-    fuelStats.innerHTML = "Fuel level high enough for launch";
-    cargoStats.innerHTML = "Cargo mass low enough for launch";
-    list.style.visibility = "visible";
-    launchStats.innerHTML = "Shuttle is Ready for Launch";
-    launchStats.style.color = `green`;
-  } */
 
 async function myFetch() {
   let planetsReturned;
